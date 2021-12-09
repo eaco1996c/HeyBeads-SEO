@@ -1,0 +1,18 @@
+function YouTubeScraper() {
+  var sh1 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+  var keyword = sh1.getRange("B1").getValue();
+  
+  var results = YouTube.Search.list('id,snippet', {q:keyword, maxResults:60});
+//Video ID	Published Date	Channel ID	"Video Title
+//"	Description	Thumbnail URL	Channel Title
+  var items = results.items.map(function(e){
+    return [e.id.videoId, 
+            e.snippet.publishedAt,
+            e.snippet.channelId,
+            e.snippet.title,
+            e.snippet.description,          
+            e.snippet.channelTitle]
+  })
+   sh1.getRange(4, 1, items.length, items[0].length).setValues(items)       
+        
+}
